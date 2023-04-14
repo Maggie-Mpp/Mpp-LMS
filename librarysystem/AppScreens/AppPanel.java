@@ -27,14 +27,14 @@ public class AppPanel extends JPanel {
 
 	private JList sideBarMenuList;
 
-	private JPanel  addBookPanel, addMember, AllMemberIds, AllBook;
+	private JPanel  addBookPanel, addMember, AllMemberIds, AllBook, allRecordsWindow, overdueBooksWindow;
 	private CheckOutBookWindow checkOutBookWindow;
 	private AddBookCopyWindow addBookCopy;
 	private CheckoutRecordWindow checkoutRecord;
 	private BookCopiesWindow bookCopiesWindow;
 	private Editor editMember;
 	private String[] listMenu = { "Add Member", "Add Book", "Add Book Copy", "Members", "Books",
-			"CheckOut Book", "CheckOut Record", "Copies","Edit member" };
+			"CheckOut Book", "CheckOut Record", "Copies","Edit member", "All Checkout Records", "Overdue Books" };
 	private String[] listAdminMenu = { "Add Member", "Add Book", "Add Book Copy", "Members", "Books",
 			"Copies" ,"Edit member"};
 	private String[] listLibrarianMenu = {  "CheckOut Book", "CheckOut Record" };
@@ -113,7 +113,9 @@ public class AppPanel extends JPanel {
 		checkOutBookWindow = CheckOutBookWindow.INSTANCE;
 		checkoutRecord = CheckoutRecordWindow.INSTANCE;
 		bookCopiesWindow = BookCopiesWindow.INSTANCE;
-		editMember=Editor.getInstance();
+		editMember = Editor.getInstance();
+		allRecordsWindow = AllRecordsWindow.INSTANCE;
+		overdueBooksWindow = OverdueBooksWindow.INSTANCE;
 
 
 		rightSide.add(listMenu[0], addMember);
@@ -124,7 +126,11 @@ public class AppPanel extends JPanel {
 		rightSide.add(listMenu[5], checkOutBookWindow);
 		rightSide.add(listMenu[6], checkoutRecord);
 		rightSide.add(listMenu[7], bookCopiesWindow);
-		rightSide.add(listMenu[8],editMember);
+		rightSide.add(listMenu[8], editMember);
+		rightSide.add(listMenu[9], allRecordsWindow);
+		rightSide.add(listMenu[10], overdueBooksWindow);
+
+
 
 	}
 

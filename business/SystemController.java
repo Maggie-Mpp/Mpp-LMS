@@ -310,9 +310,85 @@ public class SystemController implements ControllerInterface {
 //		return null;
 
 	}
+	public ArrayList<String[]> getAllCheckoutRecords() throws LibrarySystemException{
+		ArrayList<CheckoutRecord> allCheckoutRecords = new ArrayList<CheckoutRecord>();
+		HashMap<String, LibraryMember> libMemMap = dataAccess.readMemberMap();
+		libMemMap.forEach((key,value) -> allCheckoutRecords.add(value.getCheckoutRecord()));
+
+		ArrayList<String[]> allEntries = new ArrayList<String[]>();
+		for(LibraryMember lm : libMemMap.values()){
+			CheckoutRecord checkoutRecord = lm.getCheckoutRecord();
+			List<CheckoutRecordEntry> allCheckoutRecordEntries = checkoutRecord.getCheckoutRecordEntries();
+
+			for (CheckoutRecordEntry b : allCheckoutRecordEntries) {
+
+				int bookCopyNum = b.getCopy().getCopyNum();
+				LocalDate dueDate = b.getDueDate();
+				LocalDate checkoutDate = b.getCheckoutDate();
+
+				String isbn = b.getCopy().getBook().getIsbn();
+				String title =  b.getCopy().getBook().getTitle();
+				//String numOfDays = b.getCopy().getBook().
+
+				LocalDate now = LocalDate.now();
+				long passedByDays = now.minusDays(dueDate.toEpochDay()).toEpochDay();
 
 
-//	public void editLibraryMember(String text, String text1, String text2, String text3, String text4, String text5, String text6) {
-//		LibraryMember l = new
-//	}
+				String firstName = lm.getFirstName();
+				String lastName = lm.getLastName();
+
+				String fullName = lm.getFirstName() +" "+ lm.getLastName();
+
+				String[] row = {title, isbn, ""+bookCopyNum, checkoutDate.toString(), dueDate.toString(), fullName};
+				allEntries.add(row);
+				System.out.printf("Name of Book: %s\nNumber of copies: %d\nDue date: %tD\nChechout Date: %tD\nBook ISBN: %s\n" +
+						"Person who took the book: %s %s\nWas due before: %s days\n\n", title, bookCopyNum, dueDate, checkoutDate, isbn, firstName, lastName,""+passedByDays);
+
+			}
+		}
+		return allEntries;
+	}
+
+	public ArrayList<String[]> getOverdueBooks(String ISBN) throws LibrarySystemException {
+		ArrayList<CheckoutRecord> allCheckoutRecords = new ArrayList<CheckoutRecord>();
+		HashMap<String, LibraryMember> libMemMap = dataAccess.readMemberMap();
+		libMemMap.forEach((key,value) -> allCheckoutRecords.add(value.getCheckoutRecord()));
+		ArrayList<String[]>  allOverudeEntries = new ArrayList<String[]>();
+
+		for(LibraryMember lm : libMemMap.values()){
+			CheckoutRecord checkoutRecord = lm.getCheckoutRecord();
+			List<CheckoutRecordEntry> allCheckoutRecordEntries = checkoutRecord.getCheckoutRecordEntries();
+
+			for (CheckoutRecordEntry b : allCheckoutRecordEntries) {
+				if(b!= null) {
+					int bookCopyNum = b.getCopy().getCopyNum();
+					LocalDate dueDate = b.getDueDate();
+					LocalDate checkoutDate = b.getCheckoutDate();
+
+					String isbn = b.getCopy().getBook().getIsbn();
+					String title = b.getCopy().getBook().getTitle();
+					int getMaxCheckoutLength = b.getCopy().getBook().getMaxCheckoutLength();
+
+					LocalDate now = LocalDate.now();
+					long passedByDays = now.minusDays(dueDate.toEpochDay()).toEpochDay();
+
+					String firstName = lm.getFirstName();
+					String lastName = lm.getLastName();
+
+					String fullName =  lm.getFirstName() + lm.getLastName();
+
+
+
+					if(ISBN.equals(isbn)){
+						String[] row = {title, isbn, "" + bookCopyNum, checkoutDate.toString(), dueDate.toString(), fullName};
+						allOverudeEntries.add(row);
+						System.out.printf("Name of Book: %s\nNumber of copies: %d\nDue date: %tD\nChechout Date: %tD\nBook ISBN: %s\n" +
+								"Person who took the book: %s %s\nWas due before: %s days\n\n", title, bookCopyNum, dueDate, checkoutDate, isbn, firstName, lastName,""+passedByDays);
+					}
+				}
+			}
+
+		}
+		return allOverudeEntries;
+	}
 }
