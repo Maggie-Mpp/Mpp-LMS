@@ -29,9 +29,10 @@ public class OverdueBooksWindow extends JPanel implements LibWindow {
     private TextArea textArea;
     private JTextField memberIDText;
     private JTextField isbnText;
-    private JLabel errorLabel;
-    private JTable recordsTable;
 
+    private JTable recordsTable;
+    private JButton overdueButton;
+    private DefaultTableModel model;
 
     private OverdueBooksWindow() {
         super(new CardLayout());
@@ -57,28 +58,38 @@ public class OverdueBooksWindow extends JPanel implements LibWindow {
         Util.adjustLabelFont(AllIDsLabel, Util.DARK_BLUE, true);
         topPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         topPanel.add(AllIDsLabel);
+        isbnText = new JTextField(11);
+
+        JLabel isbn = new JLabel("ISBN");
+        topPanel.add(isbn);
+
+        overdueButton = new JButton("Get Books");
+
+        topPanel.add(isbnText);
+        topPanel.add(overdueButton);
     }
 
     public void defineMiddlePanel() {
         middlePanel = new JPanel();
-        middlePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 4));
-        isbnText = new JTextField(11);
-        JLabel isbn = new JLabel("ISBN");
+        middlePanel.setLayout(new BorderLayout());
 
-        JButton overdueButton = new JButton("Get Books");
+        recordsTable = new JTable();
+
+        //scrollPane.setViewportView(recordsTable);
+         model = new DefaultTableModel();
+
+
+        model.addColumn("Title");
+        model.addColumn("ISBN");
+        model.addColumn("Copy number");
+        model.addColumn("Checkout Date");
+        model.addColumn("Was due before");
+        model.addColumn("Member Name");
+        model.addColumn("Passed by days");
+        recordsTable.setModel(model);
+        middlePanel.add(new JScrollPane(recordsTable));
+
         SystemController sc = new SystemController();
-
-        JScrollPane scrollPane = new JScrollPane();
-        recordsTable = new JTable();
-        scrollPane.setViewportView(recordsTable);
-        middlePanel.add(scrollPane);
-        errorLabel = new JLabel();
-        errorLabel.setForeground(Color.RED);
-        middlePanel.add(errorLabel);
-        recordsTable = new JTable();
-        recordsTable.setForeground(Color.BLUE);
-        middlePanel.add(recordsTable);
-        showMemberCheckRecord(isbnText.toString());
         overdueButton.addActionListener(new ActionListener() {
 
             @Override
@@ -87,14 +98,11 @@ public class OverdueBooksWindow extends JPanel implements LibWindow {
                 String isbnString = isbnText.getText();
 
                 try {
-                    sc.getOverdueBooks(isbnString);
-//					resultLabel.setText("");
+                    showOverdueBooks(isbnString);
+//
 
-
-//					resultLabel.setText(String.format("Member %s has checked out book: %s", memberID, sc.getBookName(isbnString)));
-                    clearJTextFields();
                 } catch (LibrarySystemException lse) {
-//					errorLabel.setText(lse.getMessage());
+
                     JOptionPane.showMessageDialog(OverdueBooksWindow.this,
                             lse.getMessage());
                 }
@@ -102,41 +110,29 @@ public class OverdueBooksWindow extends JPanel implements LibWindow {
 
             }
         });
-        middlePanel.add(isbn);
-        middlePanel.add(isbnText);
-        middlePanel.add(overdueButton);
-
-
     }
 
-    private void showMemberCheckRecord(String memberID) {
+    private void showOverdueBooks(String isbn) throws  LibrarySystemException{
         // Use JTable to render member’s checkout record
         SystemController sc = new SystemController();
 
-        ArrayList<String[]> memberOverdue = null;
+        ArrayList<String[]> memberOverdue;
         try {
-            memberOverdue = sc.getOverdueBooks(memberID);
+            memberOverdue = sc.getOverdueBooks(isbn);
+
+            if (memberOverdue != null) {
+                for (String[] memOverdue : memberOverdue) {
+                    model.addRow(memOverdue);
+                    //System.out.println(format);
+                }
+            }
+
         } catch (LibrarySystemException e) {
             throw new RuntimeException(e);
         }
 
 
-        errorLabel.setText("");
 
-        DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Title");
-        model.addColumn("ISBN");
-        model.addColumn("Copy number");
-        model.addColumn("Checkout Date");
-        model.addColumn("Was due before");
-        model.addColumn("Member Name");
-        if (memberOverdue != null) {
-            for (String[] memOverdue : memberOverdue) {
-                model.addRow(memOverdue);
-                //System.out.println(format);
-            }
-        }
-        recordsTable.setModel(model);
 
 
     }

@@ -89,7 +89,7 @@ public class AllRecordsWindow extends JPanel implements LibWindow {
         recordsTable = new JTable();
         scrollPane.setViewportView(recordsTable);
         middlePanel.add(scrollPane);
-        System.out.println("In main panel");
+
         showMemberCheckRecord();
     }
 
@@ -101,8 +101,6 @@ public class AllRecordsWindow extends JPanel implements LibWindow {
 
         try {
             allEntries = sc.getAllCheckoutRecords();
-            for(String[] a: allEntries)
-                System.out.println(a);
             errorLabel.setText("");
             DefaultTableModel model = new DefaultTableModel();
             model.addColumn("Title");
@@ -113,7 +111,7 @@ public class AllRecordsWindow extends JPanel implements LibWindow {
             model.addColumn("Member Name");
             if (allEntries != null) {
                 for(String[] a: allEntries) {
-                    System.out.println(a);
+
                     model.addRow(a);
                 }
             }

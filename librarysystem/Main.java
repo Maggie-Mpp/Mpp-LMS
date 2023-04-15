@@ -37,7 +37,7 @@ public class Main extends JFrame {
 		setTitle("Library Management");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
-		setSize(800, 500);
+		setSize(821, 650);
 	}
 
 	private void initLayouts() {

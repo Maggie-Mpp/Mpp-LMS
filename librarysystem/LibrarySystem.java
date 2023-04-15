@@ -52,7 +52,7 @@ public class LibrarySystem extends JFrame implements LibWindow {
 
 		createMenus();
 		//pack();
-		setSize(660,500);
+		setSize(821,650);
 		isInitialized = true;
 	}
 

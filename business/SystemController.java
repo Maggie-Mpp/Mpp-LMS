@@ -341,8 +341,8 @@ public class SystemController implements ControllerInterface {
 
 				String[] row = {title, isbn, ""+bookCopyNum, checkoutDate.toString(), dueDate.toString(), fullName};
 				allEntries.add(row);
-				System.out.printf("Name of Book: %s\nNumber of copies: %d\nDue date: %tD\nChechout Date: %tD\nBook ISBN: %s\n" +
-						"Person who took the book: %s %s\nWas due before: %s days\n\n", title, bookCopyNum, dueDate, checkoutDate, isbn, firstName, lastName,""+passedByDays);
+				//System.out.printf("Name of Book: %s\nNumber of copies: %d\nDue date: %tD\nChechout Date: %tD\nBook ISBN: %s\n" +
+				//		"Person who took the book: %s %s\nWas due before: %s days\n\n", title, bookCopyNum, dueDate, checkoutDate, isbn, firstName, lastName,""+passedByDays);
 
 			}
 		}
@@ -371,24 +371,22 @@ public class SystemController implements ControllerInterface {
 
 					LocalDate now = LocalDate.now();
 					long passedByDays = now.minusDays(dueDate.toEpochDay()).toEpochDay();
-
-					String firstName = lm.getFirstName();
-					String lastName = lm.getLastName();
-
 					String fullName =  lm.getFirstName() + lm.getLastName();
 
 
 
-					if(ISBN.equals(isbn)){
-						String[] row = {title, isbn, "" + bookCopyNum, checkoutDate.toString(), dueDate.toString(), fullName};
+					if(ISBN.equals(isbn) && passedByDays >= 0){
+						String[] row = {title, isbn, "" + bookCopyNum, checkoutDate.toString(), dueDate.toString(), fullName, ""+passedByDays};
+
 						allOverudeEntries.add(row);
-						System.out.printf("Name of Book: %s\nNumber of copies: %d\nDue date: %tD\nChechout Date: %tD\nBook ISBN: %s\n" +
-								"Person who took the book: %s %s\nWas due before: %s days\n\n", title, bookCopyNum, dueDate, checkoutDate, isbn, firstName, lastName,""+passedByDays);
 					}
+
 				}
 			}
 
 		}
 		return allOverudeEntries;
 	}
+
+
 }

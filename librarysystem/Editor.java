@@ -146,8 +146,8 @@ import javax.swing.*;
         saveLibraryMemberListener(saveButton);
         add(mainPanel);
         isInitialized(true);
-        mainPanel.setSize(621,450);
-        setSize(621,450);
+        mainPanel.setSize(821,650);
+        setSize(821,650);
     }
 
 
@@ -215,8 +215,8 @@ import javax.swing.*;
         mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(middlePanel, BorderLayout.CENTER);
         isInitialized = true;
-        mainPanel.setSize(621,450);
-        setSize(621,450);
+        mainPanel.setSize(821,650);
+        setSize(821,650);
         add(mainPanel);
 
     }
@@ -348,8 +348,8 @@ import javax.swing.*;
         mainPanel.add(listPanel[1], editMemberDetailWindow);
 
         add(mainPanel);
-        mainPanel.setSize(621,450);
-        setSize(621,450);
+        mainPanel.setSize(821,650);
+        setSize(821,650);
     }
      public static void centerFrameOnDesktop(Component f) {
          Toolkit toolkit = Toolkit.getDefaultToolkit();

@@ -150,7 +150,7 @@ public class AddNewLibraryMemberWindow extends JPanel implements LibWindow {
         addLibraryMemberListener(addMemberButton);
         add(mainPanel);
         isInitialized(true);
-        setSize(621, 450);
+        setSize(821, 650);
     }
 
     private void clearFields() {

@@ -70,7 +70,7 @@ public class AddBookWindow extends JPanel implements LibWindow{
 //		addBookListener(addBookButton);
         add(mainPanel);
         isInitialized(true);
-        setSize(621, 450);
+        setSize(821, 650);
     }
 
     public boolean isInitialized() {
